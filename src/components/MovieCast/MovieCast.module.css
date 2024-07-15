@@ -1,0 +1,18 @@
+.list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 14px;
+    
+}
+.item{
+
+}
+.name{
+    font-size: 16px;
+    font-weight: 600;
+}
+.img{
+    width: 150px;
+   
+}
