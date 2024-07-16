@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, useLocation, Outlet } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useParams, Link, useLocation, Outlet, useNavigate } from "react-router-dom";
 import { getMovieDetails } from "../../api";
 import styles from "./MovieDetailsPage.module.css"
 
@@ -7,6 +7,9 @@ export default function MovieDetailsPage() {
     const {movieId} = useParams();
     const [movie, setMovie] = useState(null);
     const location = useLocation();
+    const from = location.state?.from || '/movies';
+    const navigate = useNavigate();
+    const prevLocationRef = useRef(location.state);
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -17,9 +20,12 @@ export default function MovieDetailsPage() {
     }, [movieId])
 
     const handleGoBack = () => {
-        const prevLocation = location.state?.from || '/movies';
-        window.history.back();
+        navigate(prevLocationRef.current?.from || '/')
     }
+    
+
+
+    
     return (
         <div className={styles.wrap}>
             {movie && (
@@ -37,11 +43,11 @@ export default function MovieDetailsPage() {
                 </div>
                 
                 <div className={styles.link}>
-                <Link to="cast">Cast</Link>
-                <Link to="reviews">Reviews</Link>
+                    <Link to="cast" state={{from}}>Cast</Link>
+                    <Link to="reviews" state={{from}}>Reviews</Link>
                 </div>
           
-          <Outlet />
+                <Outlet />
                 </>
             )}
         </div>

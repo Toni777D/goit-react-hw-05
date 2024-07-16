@@ -1,16 +1,28 @@
 import MovieList from "../../components/MovieList/MovieList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {searchMovie} from "../../api";
 import styles from "./MoviesPage.module.css"
+import { useSearchParams } from "react-router-dom";
 
 export default function MoviesPage() {
     const [query, setQuery] = useState('');
     const [movies, setMovies] = useState([]);
+    const [searchParams, setSeachParams] = useSearchParams();
 
-    const handleSearch = async (event) => {
+    useEffect(() => {
+        const searchQuery = searchParams.get('query');
+        if(searchQuery) {
+            const fetchMovies = async () => {
+                const movies = await searchMovie(searchQuery);
+                setMovies(movies);
+            };
+            fetchMovies();
+        }
+    }, [searchParams])
+
+    const handleSearch = (event) => {
         event.preventDefault();
-        const movies = await searchMovie(query);
-        setMovies(movies);
+        setSeachParams({query})
     }
     return (
         <div>
