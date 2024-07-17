@@ -7,7 +7,6 @@ export default function MovieDetailsPage() {
     const {movieId} = useParams();
     const [movie, setMovie] = useState(null);
     const location = useLocation();
-    const from = location.state?.from || '/movies';
     const navigate = useNavigate();
     const prevLocationRef = useRef(location.state);
 
@@ -20,7 +19,7 @@ export default function MovieDetailsPage() {
     }, [movieId])
 
     const handleGoBack = () => {
-        navigate(prevLocationRef.current?.from || '/')
+        navigate(prevLocationRef.current)
     }
     
 
@@ -43,8 +42,8 @@ export default function MovieDetailsPage() {
                 </div>
                 
                 <div className={styles.link}>
-                    <Link to="cast" state={{from}}>Cast</Link>
-                    <Link to="reviews" state={{from}}>Reviews</Link>
+                    <Link to="cast">Cast</Link>
+                    <Link to="reviews">Reviews</Link>
                 </div>
           
                 <Outlet />
